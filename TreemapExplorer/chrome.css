@@ -1,0 +1,74 @@
+body {
+	font: Arial !important;
+	background-color: #d8ebc8;
+	background-image: linear-gradient(bottom, rgb(255,255,255) 20%, rgb(255,255,255) 60%, rgb(216,235,200) 73%);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #C2C2C2;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #C2C2C2;
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+#header {
+	background:url(logo2.png) no-repeat #d8ebc8;
+	height: 120px;
+	width: 600px;
+	margin-bottom: 10px;
+}
+
+#navigation #upperPane {
+	display:table-cell;
+}
+
+#navigation #applyBtns {
+    display:table-cell;
+
+}
+
+#singaporeMap {
+	display:none;	
+}
+
+
+#leftPanel {
+	display:table-cell;
+	border:none;
+	vertical-align:top;
+}
+
+#rightPanel {
+	display:table-cell;
+	border:none;
+}
+
+#rightPanel #rightChart {
+	margin-top: 100px;
+	border-left:thin;
+}
+
+#rightPanel #rightDesc {
+	font: Calibri;	
+	padding-left:40px;
+}

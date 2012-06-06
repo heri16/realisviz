@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="../../d3.js"></script>
+    <script type="text/javascript" src="../../d3.csv.js"></script>
+    <script type="text/javascript" src="../../d3.time.js"></script>
+	<script type="text/javascript" src="../../d3.layout.js"></script>
+    <style type="text/css">
+
+body {
+  font: 10px sans-serif;
+  margin: 0;
+}
+
+path.line {
+  fill: none;
+  stroke: #f5f5f5;
+  stroke-width: 1.5px;
+  z-index:3;
+}
+
+path.line:hover{
+  stroke: #000;
+  z-index: 999;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #0f0;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  fill: none;
+  stroke: #000;
+  /*display: none;*/
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+.y2.axis line, .y2.axis path {
+  fill: none;
+  stroke: #000;
+}
+.chart rect {
+  fill: steelblue;
+  stroke: white;
+  z-index:2;
+}
+
+.bar {
+	z-index:1;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="focusDiv"></div>
+    <script type="text/javascript" src="focus.js"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+.cell {
+    border: solid 1px white;
+    font: 9px sans-serif;
+    line-height: 11px;
+    overflow: hidden;
+    position: absolute;
+    text-indent: 2px;
+    /* Transitions here. */
+    -webkit-transition: top 1s ease-out, left 1s ease-out, width 1s ease-out, height 1s ease-out, opacity 0.5s linear 0s;
+    -moz-transition: top 1s ease-out, left 1s ease-out, width 1s ease-out, height 1s ease-out, opacity 0.5s linear 0s;
+    -o-transition: top 1s ease-out, left 1s ease-out, width 1s ease-out, height 1s ease-out, opacity 0.5s linear 0s;
+    transition: top 1s ease-out, left 1s ease-out, width 1s ease-out, height 1s ease-out, opacity 0.5s linear 0s;
+    /* See here: http://www.greywyvern.com/?post=337 */
+    visibility: visible;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    opacity: 1
+    }
+
+.invisible {
+    visibility: hidden;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    opacity: 0;
+    -webkit-transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+    -moz-transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+    -o-transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear
+    }
+
+.hasChildren {
+    text-align: center;
+    font-weight: bold
+    }
+
+
+/*
+#nestOrderList li {
+  display: inline;
+  list-style-type: none;
+  margin-right: 20px;
+  border: solid 1px #666666;
+  padding: 2px;
+}
+*/
+
+div .scrollListbox {
+    text-align: center;
+    overflow-x: scroll;
+    max-width: 750px;
+}
+
+#nestOrderList, #availColList {
+    list-style-type: none;
+    margin: 0; padding: 0;
+    min-height: 30px; width: 3000px;
+}
+#nestOrderList li, #availColList li {
+    position: relative; float: left;
+    margin: 2px 2px 2px 5px;
+    padding: 5px;
+    font-size: 10pt;
+    width: 135px;
+    max-height: 120px;
+}
+#nestOrderList li .ui-icon, #availColList li .ui-icon {
+    position: relative; float:left;
+    margin-left: -3px;
+}
+
+#nestOrderList {
+  background-color: #b2b2b2;
+}
+
+#availColList {
+  background-color: #b2b2b2;
+}
+
+.colKeysWindow {
+  font-size: 11px;
+  margin-top: 5px;
+  height: 50px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  border: gray solid 1px;
+  white-space: pre;
+}
+
+.binSlider-div {
+
+}
+
+.binSlider-status {
+  color: #f6931f;
+}
+
+#dataTableDiv{
+  display: none;
+}

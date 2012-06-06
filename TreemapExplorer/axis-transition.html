@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="../../d3.js"></script>
+    <script type="text/javascript" src="../../d3.csv.js"></script>
+    <script type="text/javascript" src="../../d3.time.js"></script>
+	<script type="text/javascript" src="../../d3.layout.js"></script>
+    <style type="text/css">
+
+body {
+  font: 10px sans-serif;
+  margin: 0;
+}
+
+path.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+  z-index:1;
+}
+
+path.line:hover{
+  stroke: #000;
+  z-index: 999;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+var m = [20, 40, 20, 20],
+    w = 960 - m[1] - m[3],
+    h = 300 - m[0] - m[2],
+    format = d3.time.format("%Y-%m-%d"),
+	mformat = d3.time.format("%Y-%m");
+
+// Scales. Note the inverted domain for the y-scale: bigger is up!
+var x = d3.time.scale().range([0, w]),
+    y = d3.scale.linear().range([h, 0]);
+
+// Axes.
+var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true),
+    yAxis = d3.svg.axis().scale(y).ticks(4).orient("right");
+/*
+// An area generator, for the light fill.
+var area = d3.svg.area()
+    .interpolate("monotone")
+    .x(function(d) { return x(d.date); })
+    .y0(h)
+    .y1(function(d) { return y(d.price); });
+*/
+// A line generator, for the dark stroke.
+
+
+d3.json("grabData.php", function(data) {
+  console.dir(data);
+  
+  // Parse dates and numbers. We assume values are sorted by date.
+  data.forEach(function(d) {
+	d['Contract Date'] = format.parse(d['Contract Date']);
+    d['Unit Price ($ psm)'] = +d['Unit Price ($ psm)'];
+  });
+  
+  // put them in property type json
+  var values = d3.nest()
+      .key(function(d) { return d['Property Type']; })
+	  .key(function(d) { return d['Type of Sale']; })
+	  .key(function(d) { return mformat(d['Contract Date']); }).sortKeys(d3.ascending)
+	  .rollup(function(d) {
+	       var maxPsmPrice = d3.max(d, function(e) { return e['Unit Price ($ psm)']; } ); 
+	       return { "rows": d, "maxPsmPrice": maxPsmPrice }; 
+		 })
+      .entries(data);
+  console.dir(values);
+  
+  
+
+  // alert(values[0].values.length);
+  // alert(values[0].values[values[0].values.length - 1].date);
+  
+  // Compute the minimum and maximum date, and the maximum price.
+  x.domain([new Date(2000,1,1), new Date(2010,1,1)]);
+  
+  // var prices = values[0].values.map(function(e) { return e.price; });
+  // var p50 = d3.quantile(prices.sort(d3.ascending), 0.5);
+  y.domain([ 0, d3.max(data, function(d) { return 25000; } )]);
+	/*
+	, d3.max(values[0].values, function(d) { 
+												return d.price;
+  											})]);
+  y.domain([0, d3.max(values[0].values, function(d) { 
+												return d.price;
+  											})]);
+											
+											alert(d3.max(values, function(d) { 
+												var length = values.length;
+												for (var i = 0; i < length; i++){
+													var length2 = values[i].values.length;
+													for (var j = 0; j < length2; j++){
+														return values[i].values[j].price;
+													}
+												}
+  											}));
+	*/	
+							
+  // Add an SVG element with the desired dimensions and margin.
+  var svg = d3.select("body").append("svg:svg")
+      .attr("width", w + m[1] + m[3])
+      .attr("height", h + m[0] + m[2])
+    .append("svg:g")
+      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+  // Add the clip path.
+  svg.append("svg:clipPath")
+      .attr("id", "clip")
+    .append("svg:rect")
+      .attr("width", w)
+      .attr("height", h);
+/*
+  // Add the area path.
+  svg.append("svg:path")
+      .attr("class", "area")
+      .attr("clip-path", "url(#clip)")
+      .attr("d", area(values));
+*/
+  // Add the x-axis.
+  svg.append("svg:g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + h + ")")
+      .call(xAxis);
+
+  // Add the y-axis.
+  svg.append("svg:g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(" + w + ",0)")
+      .call(yAxis);
+  /*
+  var hierarchy = d3.layout.hierarchy()
+      .children(function(d) { return (d.values instanceof Array) ? d.values : null })
+	  .value(function(d) { return d.values.rows; } );
+	  
+  hierarchy.nodes({"key": "ROOT", "values": values});
+    */
+	
+  var line = d3.svg.line()
+    .interpolate("monotone")
+    .x(function(d) {
+		return x(mformat.parse(d.key)); 
+	})
+    .y(function(d) {
+		return y(d.values['maxPsmPrice']); 
+	});
+	
+  var level1 = values;
+  for (var i in level1) {
+    console.log(level1[i].key);
+    var level2 = level1[i].values;
+	
+	
+	// generateParentLine(level1[i].key, level2);
+	  
+	for (var j in level2) {
+	  console.log(level1[i].key + " > " + level2[j].key);
+	  var level3 = level2[j].values;
+	  
+	  for (var k in level3) {
+	    var maxPsmPrice = level3[k].values['maxPsmPrice'];
+	    //console.log(level3[k].key + ": " + maxPsmPrice);
+	  }
+	  
+	  generateLine(level1[i].key + " > " + level2[j].key, level3);
+	  
+	}
+  }
+  
+  
+  
+  function generateLine(lineId, obj) {
+    svg.append("svg:path")
+	  .data([obj])
+	  .attr("d", line)
+      .attr("class", "line")
+      .attr("clip-path", "url(#clip)")
+	  .attr("data-lineId", lineId)
+	  .on("click", function(d, i) {
+	    var evt = d3.event;
+		var el = d3.select(this);
+		alert(el.attr("data-lineId"));
+		console.dir(evt);
+		console.dir(d);
+	  });
+  }
+  
+  function findChildren(d){
+  	
+  }
+  /*
+  function generateParentLine(lineId, obj) {
+    line.y(function(d) {
+		var maxPsmPrice = d3.max(d.values, function(d) { return d['maxPsmPrice']; } );
+		alert(d.values[0].['maxPsmPrice']);    
+		return y(maxPsmPrice); 
+	//	console.dir(d);
+	});
+	
+    svg.append("svg:path")
+	  .data([obj])
+	  .attr("d", line)
+      .attr("class", "line")
+      .attr("clip-path", "url(#clip)")
+	  .attr("data-lineId", lineId)
+	  .on("click", function(d, i) {
+	    var evt = d3.event;
+		var el = d3.select(this);
+		alert(el.attr("data-lineId"));
+		console.dir(evt);
+		console.dir(d);
+	  });
+  }*/
+  
+  
+  /*  
+  for (var i = 0; i < length; i++){
+  	// Add the line path.
+  	
+	  
+  }*/
+  
+  function alertTest(){
+  	//  y.domain([0,p50]);
+     // line.transition().duration(1500).y(function(d) { return y(d.price); });
+  }
+/*
+  // Add a small label for the symbol name.
+  svg.append("svg:title")
+      .attr("x", w - 6)
+      .attr("y", h - 6)
+      .attr("text-anchor", "end")
+      .text(values[0].id);
+
+  // On click, update the x-axis.
+  svg.on("click", function() {
+    var n = values.length - 1,
+        i = Math.floor(Math.random() * n / 2),
+        j = i + Math.floor(Math.random() * n / 2) + 1;
+    x.domain([values[i].date, values[j].date]);
+    var t = svg.transition().duration(750);
+    t.select(".x.axis").call(xAxis);
+    t.select(".line").attr("d", line(values)); 
+  }); */
+});
+
+    </script>
+  </body>
+</html>

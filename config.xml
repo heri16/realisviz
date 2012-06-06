@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        version="1.0.0.0">
+
+  <name>CSViz</name>
+  <description>
+    Visualize any CSV file (comma-separated values export files), and interact with it to gain new business insights.
+  </description>
+
+  <rim:orientation mode="landscape"/>
+  <rim:loadingScreen backgroundColor="#333333"
+                     backgroundImage="media/images/eye_wallpaper.jpg"
+                     foregroundImage="media/images/globe_animated.gif"
+                     onFirstLaunch="true"
+                     onLocalPageLoad="true">
+    <rim:transitionEffect type="zoomIn"/>
+  </rim:loadingScreen>
+
+  <rim:category name="all"/>
+
+  <rim:permissions>
+    <rim:permit>access_shared</rim:permit>
+  </rim:permissions>
+
+  <icon src="media/images/graph_icon.png"/>
+
+  <content src="TreemapExplorer/treemap.html"/>
+
+  <feature id="blackberry.ui.dialog"/>
+  <access uri="http://nodejitsu.com" subdomains="true">
+    <feature id="blackberry.app.event"/>
+    <feature id="blackberry.invoke"/>
+  </access>
+
+</widget>
